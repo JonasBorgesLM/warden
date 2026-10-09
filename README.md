@@ -63,9 +63,9 @@ The tool enforces this technically, not just by convention:
 - Go 1.25 or later (see `go.mod`). The floor is set by the dependencies
   (`kin-openapi`, `golang.org/x/time`), not by the scanner's own code.
 
-`go.mod` also pins an exact `toolchain` version, one patch release ahead of
-the `go` directive's minimum, for a reason worth knowing before it costs you
-a debugging session: **`golangci-lint` and `govulncheck` are compiled against
+`go.mod` also pins an exact `toolchain` version (1.27.2, ahead of the `go`
+directive's minimum because GO-2026-6617 has no fix on the 1.25 line), for a
+reason worth knowing before it costs you a debugging session: **`golangci-lint` and `govulncheck` are compiled against
 a specific Go version and fail with `export data version N is greater than
 maximum supported version M` when the local Go is newer** — the errors
 surface inside the standard library and look nothing like this repository,
@@ -73,8 +73,8 @@ which reads as "lint is broken here" rather than what it is. Prefixing the
 command with the pinned version fixes it:
 
 ```bash
-GOTOOLCHAIN=go1.25.14 golangci-lint run ./...
-GOTOOLCHAIN=go1.25.14 go run golang.org/x/vuln/cmd/govulncheck@v1.7.0 ./...
+GOTOOLCHAIN=go1.27.2 golangci-lint run ./...
+GOTOOLCHAIN=go1.27.2 go run golang.org/x/vuln/cmd/govulncheck@v1.7.0 ./...
 ```
 
 CI already runs with the right toolchain; this only matters for a local Go
@@ -441,7 +441,7 @@ go run golang.org/x/vuln/cmd/govulncheck@v1.7.0 ./...   # known-vulnerable depen
 ```
 
 If your local Go is newer than the pin in `go.mod`, prefix the last two with
-`GOTOOLCHAIN=go1.25.14` — see [Requirements](#requirements) for why.
+`GOTOOLCHAIN=go1.27.2` — see [Requirements](#requirements) for why.
 
 Tests never touch the outside network: checks run against a fake
 `HTTPClient` fed from `testdata/`, and authentication tests use an

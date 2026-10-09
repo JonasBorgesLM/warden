@@ -10,7 +10,11 @@ go 1.25.0
 // Pinned exactly, like the govulncheck version in the CI workflow, so the
 // gate stays reproducible. When it goes stale the govulncheck step fails
 // and says so, which is the bump reminder.
-toolchain go1.25.14
+//
+// 1.27.2 since GO-2026-6617 (net/http HTTP/2, CVE-2026-97032): fixed in
+// 1.26.9 and 1.27.2, never on the 1.25 line this was on, which no longer
+// receives fixes. Only 1.27.2 excludes both lines' vulnerable releases.
+toolchain go1.27.2
 
 require (
 	github.com/getkin/kin-openapi v0.146.0

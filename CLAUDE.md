@@ -16,7 +16,7 @@ A Go CLI security scanner built for study purposes, targeting **only the author'
 ```bash
 go build ./...                          # build everything
 go vet ./...                            # static checks
-GOTOOLCHAIN=go1.25.14 golangci-lint run ./...   # lint — see note below
+GOTOOLCHAIN=go1.27.2 golangci-lint run ./...   # lint — see note below
 go test ./...                           # run all tests
 go test ./internal/checks/... -run TestX -v   # run a single test
 go build -o warden ./cmd/warden       # build the CLI binary
